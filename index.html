@@ -8,6 +8,8 @@
     <py-env>
       - numpy
       - matplotlib
+      - scikit-learn
+      - pandas
       - paths:
         - ./test_module.py
     </py-env>
@@ -15,15 +17,18 @@
   <body>
     <div type="fileinput"></div>
     <py-title> pyscript로 머신러닝 구현하기 </py-title>   
-    <div id="plot"></div>
 
+    <h1>pyscript github</h1>
+    <div id="plot"></div>
     <py-script output="plot">
           
       import matplotlib.pyplot as plt
       import numpy as np
+      import pandas as pd
       from test_module import check
-      
-      
+      from sklearn.linear_model import LinearRegression
+
+
 
       print(check(1,100)) <!-- 확인 -->
       
@@ -36,6 +41,46 @@
 
       
     </py-script>
+
+    <h1>sklearn.LinearRegression 라이브러리 활용</h1>
+    <div id="grid"></div>
+    <py-script output="grid">
+                
+      import matplotlib.pyplot as plt
+      import numpy as np
+      import pandas as pd
+      from test_module import check
+      from sklearn.linear_model import LinearRegression
+      
+
+
+      data = np.array([
+            [100, 20], 
+            [150, 24], 
+            [300, 36], 
+            [400, 47], 
+            [130, 22], 
+            [240, 32],
+            [350, 47], 
+            [200, 42], 
+            [100, 21], 
+            [110, 21], 
+            [190, 30], 
+            [120, 25], 
+            [130, 18], 
+            [270, 38], 
+            [255, 28]])
+
+      x = data[:, 0]
+      y = data[:, 1]
+      
+      fig, ax = plt.subplots()
+      ax.scatter(x, y)
+      fig
+
+
+    </py-script>
+    <!-- html 에서 python 입력  -->
     <py-repl></py-repl>
   </body>
 </html>
