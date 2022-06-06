@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+    <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+    <py-env>
+      - numpy
+      - matplotlib
+      - paths:
+        - ./test_module.py
+    </py-env>
+  </head>
+  <body>
+    <div type="fileinput"></div>
+    <py-title> pyscript로 머신러닝 구현하기 </py-title>   
+    <div id="plot"></div>
+
+    <py-script output="plot">
+          
+      import matplotlib.pyplot as plt
+      import numpy as np
+      from test_module import check
+      
+      
+
+      print(check(1,100)) <!-- 확인 -->
+      
+      x = np.random.randn(1000)
+      y = np.random.randn(1000)
+
+      fig, ax = plt.subplots()
+      ax.scatter(x, y)
+      fig
+
+      
+    </py-script>
+    <py-repl></py-repl>
+  </body>
+</html>
