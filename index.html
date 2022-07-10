@@ -45,6 +45,11 @@
     <h1>sklearn.LinearRegression 라이브러리 활용</h1>
     <div id="gridy"></div>
 
+    <div>이곳에 키와 몸무게를 입력해주세요(저장되지 않습니다)</div>
+
+  
+    <div id="height-output"></div>
+
     <py-script output="gridy">
       from sklearn.linear_model import LogisticRegression
       from sklearn.preprocessing import LabelEncoder, StandardScaler
@@ -52,6 +57,8 @@
       from sklearn.model_selection import train_test_split, cross_val_score
       import pandas as pd
 
+
+      from js import console
 
       def info_to_df(height, weight, gender):
 
@@ -63,62 +70,84 @@
         return infodf
 
 
-      height = 170 
-      weight = 100
-      gender = 1
       
-      
-      data = pd.DataFrame([['Male',174,96,4],
-                          ['Male',189,87,2],
-                          ['Female',185,110,4],
-                          ['Male',149,61,3],
-                          ['Male',189,104,3],
-                          ['Male',147,92,5],
-                          ['Male',154,111,5],
-                          ['Male',174,90,3],
-                          ['Female',169,103,4],
-                          ['Male',195,81,2],
-                          ['Female',159,80,4],
-                          ['Female',192,101,3],
-                          ['Male',155,51,2],
-                          ['Male',191,79,2],
-                          ['Female',153,107,5],
-                          ['Female',157,110,5],
-                          ['Male',140,129,5],
-                          ['Male',144,145,5],
-                          ['Male',172,139,5],
-                          ['Male',157,110,5],
-                          ['Female',153,149,5],
-                          ['Female',169,97,4],
-                          ['Female',195,104,3],
-                          ['Male',149,61,3]], columns = ['Gender','Height','Weight','Index'])   
-      df = data
-      le = LabelEncoder()
-      df["gender"] = le.fit_transform(df["Gender"])
-      
-      df["Height"] = df["Height"] / 100
-      df["Weight"] = df["Weight"] / 100
-      
-      X = df.drop(["Index", "Gender"], axis="columns")
-      y = df["Index"]
-      X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.15)
-      
-      
-      
-      model = KNeighborsClassifier(n_neighbors=5)
-      test = model.fit(X_train, y_train)
+      def make_ml_answer(*args,**kwargs):
+        data = pd.DataFrame([['Male',174,96,4],
+                            ['Male',189,87,2],
+                            ['Female',185,110,4],
+                            ['Male',149,61,3],
+                            ['Male',189,104,3],
+                            ['Male',147,92,5],
+                            ['Male',154,111,5],
+                            ['Male',174,90,3],
+                            ['Female',169,103,4],
+                            ['Male',195,81,2],
+                            ['Female',159,80,4],
+                            ['Female',192,101,3],
+                            ['Male',155,51,2],
+                            ['Male',191,79,2],
+                            ['Female',153,107,5],
+                            ['Female',157,110,5],
+                            ['Male',140,129,5],
+                            ['Male',144,145,5],
+                            ['Male',172,139,5],
+                            ['Male',157,110,5],
+                            ['Female',153,149,5],
+                            ['Female',169,97,4],
+                            ['Female',195,104,3],
+                            ['Male',149,61,3]], columns = ['Gender','Height','Weight','Index'])   
+                            
+        df = data
+        le = LabelEncoder()
+        df["gender"] = le.fit_transform(df["Gender"])
+        
+        df["Height"] = df["Height"] / 100
+        df["Weight"] = df["Weight"] / 100
+        
+        
 
+        X = df.drop(["Index", "Gender"], axis="columns")
+        y = df["Index"]
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.15)
+        
+        
+        model = KNeighborsClassifier(n_neighbors=5)
+        test = model.fit(X_train, y_train)
 
-      <!-- loaded_model = joblib.load("../bmi_model.pkl") -->
-      prediction = test.predict(info_to_df(height, weight, gender))
+        check_height = document.getElementById('height').value;
+        check_weight = document.getElementById('weight').value;
+        check_gender = document.getElementById('gender').value;
+        
+        console.log(check_height);
+        console.log(check_weight);
+        console.log(check_gender);
 
-      prediction_dict = {1: "깡마름", 2: "마름", 3: "보통", 4: "통통", 5: "뚱뚱"}
+        height,weight,gender = int(check_height),int(check_weight), int(check_gender)
+        print("키몸무게성별 잘나오나??",height,weight,gender)
+        print("키몸무게성별 잘나오나??",type(height),type(weight),gender)
+        if height:
+          print("키 나옴??")
+          prediction = test.predict(info_to_df(height, weight, gender))
+          print("prediction",prediction)
+          prediction_dict = {1: "깡마름", 2: "마름", 3: "보통", 4: "통통", 5: "뚱뚱"}
+          prediction_name = prediction_dict[prediction[0]]
 
-      prediction_name = prediction_dict[prediction[0]]
-
-      print("결과값:",prediction_name)
+          print("결과값:",prediction_name)
+          pyscript.write("temp",prediction_name)
 
     </py-script>
+
+    <input id="height" type="text"/>
+    <input id="weight" type="text"/>
+    <input id="gender" type="text"/>
+
+
+
+    <button id="make_ml_answer" type="submit" pys-onClick="make_ml_answer">누르기</button>
+
+    <textarea id="temp"></textarea>
+
+
     <py-script output="grid">
                 
       <!-- import matplotlib.pyplot as plt
