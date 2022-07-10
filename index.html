@@ -10,6 +10,7 @@
       - matplotlib
       - scikit-learn
       - pandas
+      - panel==0.13.1a2
       - paths:
         - ./test_module.py
     </py-env>
@@ -29,8 +30,7 @@
       from sklearn.linear_model import LinearRegression
 
 
-
-      print(check(1,100)) <!-- 확인 -->
+      print(check(1,100))
       
       x = np.random.randn(1000)
       y = np.random.randn(1000)
@@ -39,20 +39,95 @@
       ax.scatter(x, y)
       fig
 
-      
+      print("check 끝")
     </py-script>
 
     <h1>sklearn.LinearRegression 라이브러리 활용</h1>
-    <div id="grid"></div>
+    <div id="gridy"></div>
+
+    <py-script output="gridy">
+      from sklearn.linear_model import LogisticRegression
+      from sklearn.preprocessing import LabelEncoder, StandardScaler
+      from sklearn.neighbors import KNeighborsClassifier
+      from sklearn.model_selection import train_test_split, cross_val_score
+      import pandas as pd
+
+
+      def info_to_df(height, weight, gender):
+
+        height, weight = height / 100, weight / 100
+        check = pd.DataFrame(columns=["Height", "Weight", "gender"])
+        data_to_insert = {"Height": height, "Weight": weight, "gender": gender}
+        infodf = check.append(data_to_insert, ignore_index=True)
+
+        return infodf
+
+
+      height = 170 
+      weight = 100
+      gender = 1
+      
+      
+      data = pd.DataFrame([['Male',174,96,4],
+                          ['Male',189,87,2],
+                          ['Female',185,110,4],
+                          ['Male',149,61,3],
+                          ['Male',189,104,3],
+                          ['Male',147,92,5],
+                          ['Male',154,111,5],
+                          ['Male',174,90,3],
+                          ['Female',169,103,4],
+                          ['Male',195,81,2],
+                          ['Female',159,80,4],
+                          ['Female',192,101,3],
+                          ['Male',155,51,2],
+                          ['Male',191,79,2],
+                          ['Female',153,107,5],
+                          ['Female',157,110,5],
+                          ['Male',140,129,5],
+                          ['Male',144,145,5],
+                          ['Male',172,139,5],
+                          ['Male',157,110,5],
+                          ['Female',153,149,5],
+                          ['Female',169,97,4],
+                          ['Female',195,104,3],
+                          ['Male',149,61,3]], columns = ['Gender','Height','Weight','Index'])   
+      df = data
+      le = LabelEncoder()
+      df["gender"] = le.fit_transform(df["Gender"])
+      
+      df["Height"] = df["Height"] / 100
+      df["Weight"] = df["Weight"] / 100
+      
+      X = df.drop(["Index", "Gender"], axis="columns")
+      y = df["Index"]
+      X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.15)
+      
+      
+      
+      model = KNeighborsClassifier(n_neighbors=5)
+      test = model.fit(X_train, y_train)
+
+
+      <!-- loaded_model = joblib.load("../bmi_model.pkl") -->
+      prediction = test.predict(info_to_df(height, weight, gender))
+
+      prediction_dict = {1: "깡마름", 2: "마름", 3: "보통", 4: "통통", 5: "뚱뚱"}
+
+      prediction_name = prediction_dict[prediction[0]]
+
+      print("결과값:",prediction_name)
+
+    </py-script>
     <py-script output="grid">
                 
-      import matplotlib.pyplot as plt
+      <!-- import matplotlib.pyplot as plt
       import numpy as np
       import pandas as pd
       from test_module import check
       from sklearn.linear_model import LinearRegression
-      
-
+       -->
+<!-- 
 
       data = np.array([
             [100, 20], 
@@ -76,11 +151,14 @@
       
       fig, ax = plt.subplots()
       ax.scatter(x, y)
-      fig
+      fig -->
 
 
     </py-script>
     <!-- html 에서 python 입력  -->
-    <py-repl></py-repl>
+    <py-repl>
+    print([i for i in range(1,10)])
+
+    </py-repl>
   </body>
 </html>
