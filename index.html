@@ -3,6 +3,8 @@
 <html>
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
     <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
     <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
     <py-env>
@@ -16,6 +18,7 @@
     </py-env>
   </head>
   <body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
     <div type="fileinput"></div>
     <py-title> pyscript로 머신러닝 구현하기 </py-title>   
 
@@ -133,19 +136,33 @@
           prediction_name = prediction_dict[prediction[0]]
 
           print("결과값:",prediction_name)
-          pyscript.write("temp",prediction_name)
+          pyscript.write("result",prediction_name)
 
     </py-script>
 
-    <input id="height" type="text"/>
-    <input id="weight" type="text"/>
-    <input id="gender" type="text"/>
+    <div class="input-group mb-3">
+      <span class="input-group-text">키</span>
+      <input id="height" type="text" class="form-control" aria-label="Amount (to the nearest dollar)"/>
+      <span class="input-group-text">cm</span>
+      
+      <span class="input-group-text">몸무게</span>
+      <input id="weight" type="text" class="form-control" aria-label="Amount (to the nearest dollar)"/>
+      <span class="input-group-text">kg</span>
 
+      <span class="input-group-text">성별</span>
+      <input id="gender" type="text" class="form-control" aria-label="Amount (to the nearest dollar)"/>
+      <span class="input-group-text">남자:1 / 여자:2</span>
 
+    </div>
+ 
+    <button id="make_ml_answer" type="submit" pys-onClick="make_ml_answer" class="btn btn-primary">누르기</button>
 
-    <button id="make_ml_answer" type="submit" pys-onClick="make_ml_answer">누르기</button>
+    <!-- <textarea id="result"></textarea> -->
 
-    <textarea id="temp"></textarea>
+    <div class="form-floating">
+      <textarea class="form-control" placeholder="Leave a comment here" id="result"></textarea>
+      <label for="result">결과(깡마름/마름/보통/통통/뚱뚱)</label>
+    </div>
 
 
     <py-script output="grid">
