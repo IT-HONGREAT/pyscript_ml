@@ -114,14 +114,19 @@
         model = KNeighborsClassifier(n_neighbors=5)
         test = model.fit(X_train, y_train)
 
-        check_height = document.getElementById('height').value;
-        check_weight = document.getElementById('weight').value;
-        check_gender = document.getElementById('gender').value;
+        string_height = document.getElementById('height').value;
+        string_weight = document.getElementById('weight').value;
+        string_gender = document.getElementById('gender').value;
+
+        check_height = int(round(float(string_height)))
+        check_weight = int(round(float(string_weight)))
+        check_gender = int(round(float(string_gender)))
         
         console.log(check_height);
         console.log(check_weight);
         console.log(check_gender);
 
+        console.log("test",int(check_height));
         height,weight,gender = int(check_height),int(check_weight), int(check_gender)
         print("키몸무게성별 잘나오나??",height,weight,gender)
         print("키몸무게성별 잘나오나??",type(height),type(weight),gender)
